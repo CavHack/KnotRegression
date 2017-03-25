@@ -29,7 +29,7 @@ def loadCsv(filename):
 
 
 
-    def splitDataset(dataset, splitRatio):
+  def splitDataset(dataset, splitRatio):
             """"
             We need to split the data into a training dataset that Naive Bayes can use to make predictions
             and a test dataset that we can use to evaluate the accuracy of the model.
@@ -40,6 +40,7 @@ def loadCsv(filename):
         trainSize = int(len(dataset) * splitRatio)
         trainSet = []
         copy = list(dataset)
+
         while len(trainSet) < trainSize:
             index = random.randrange(len(copy))
             trainSet.append(copy.pop(index))
@@ -92,3 +93,54 @@ def summarizeByClass(dataset)
     separated = separateByClass(dataset)
     summaries = {}
     for classValue, instances in separated.iteritems():
+        summaries[classValue] = summarize(instances)
+return summaries
+
+def calculateClassProbabilities(summaries, inputVector):
+    probabilities = {}
+    for classValue, classSummaries in summaries.iteritems():
+        probabilities[classValue] = 1
+        for i in range(len(classSummaries)):
+            mean, stdev = classSummaries[i]
+            x = inputVector[i]
+            probabilities[classValue] *= calculateProbability(x, mean, stdev)
+        return probabilities
+
+        def predict(summaries, inputVector)
+        probabilities = calculateClassProbabilities(summaries, inputVector)
+        bestLabel, bestProb = None, -1
+        for classValue, probability in probabilities.iteritems():
+            bestProb = probability
+            bestLabel = classValue
+
+        return bestLabel
+
+def predict(summaries, inputVector)
+    probabilities = calculateClassProbabilities(summaries, inputVector)
+    bestLabel, bestProb = None, -1
+    for classValue, probability in probabilities.iteritems():
+        if bestLabel is None or probability > best prob:
+            bestProb = probability
+            bestLabel = classValue
+
+        return bestLabel
+
+def getPredictions(summaries, testSet)
+    predictions = []
+    for i in range(len(testSet)):
+        result = predict(summaries, testSet[i])
+        predictions.append(result)
+
+        return predictions
+
+def getAccuracy(testSet, predictions):
+    correct = 0
+    for i in range(len(testSet)):
+        if testSet[i][-1] == predictions[i]:
+            correct += 1
+
+        return (correct/float(len(testSet))) * 100.0
+
+
+#to-do
+#main
