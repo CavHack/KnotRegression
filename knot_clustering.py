@@ -17,3 +17,51 @@ def load_data(input_file):
       Input: x1, ..., xn where x in R^d, and K
       Output: Vector c of cluster assignments, and K mean vectors mu
         """"
+
+        #define Sample size
+        N = X.shape[0]
+
+        #Initialize output variables
+        c = np.zeros(N)
+        mu = X[np.random.choice(N, K, replace=False), :]
+
+        for i in xrange(N):
+            kmin = 1
+            minDist = float('Inf')
+            for k in xrange(K):
+                dist = np.linalg.norm(X[i, :] - mu[k, :])]
+                #check the boundaries, and if minDist is greater
+                if dist < minDist:
+                    #equalize
+                    minDist = dist
+                    #paramerize
+                    kmin = k
+
+                    #iterate.
+                    c[i] = kmin + 1
+
+            cNew = np.zeros(N)
+
+            #dummy it
+            it=1
+
+            while it <= maxit and not all(c == cNew):
+                # write to output file if required
+                if saveLog:
+                    with open('centroids-' + str(it) + '.csv', 'w') as f:
+                        for mu_i in mu:
+                            for j in xrange(len(mu_i) - 1):
+                                f.write(str(mu_i[j]) + ',')
+                                f.write(str(mu_i[len(mu_i) - 1]) + '\n')
+
+                        c = np.copy(cNew)
+                        for i in xrange(N):
+                            kmin = 1
+                            minDist = float('Inf')
+                            for k in xrange(K):
+                                dist = np.linalg.norm(X[i, :] - mu[k, :])
+                                if dist < minDist
+                                minDist = dist
+                                kmin = k
+
+                            cNew[i] = kmin + 1
