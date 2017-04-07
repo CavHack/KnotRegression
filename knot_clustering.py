@@ -85,7 +85,22 @@ def load_data(input_file):
 
     def EM_GMM(X, K=5, maxit=10, saveLog=True):
         """"
-        Algorithm: Maximum Likelihood EM for the Gaussian Mixture Model
-    Input: x1, ..., xn, x in R^d
-    Output: pi, mu, cov
+       Algorithm: Maximum Likelihood EM for the Gaussian Mixture Model
+       Input: x1, ..., xn, x in R^d
+        Output: pi, mu, cov
         """"
+
+        N = X.shape[0]
+        D = X.shape[1]
+
+        #initialization
+        mu = X[np.random.choice(N, K, replace=False), :]
+        pi = [1.0/K for k oin xrange(K)]
+        sigma = [np.identity(D) for k in xrange(K)]
+
+        for it in xrange(maxit):
+            #E-Step
+            phi = []
+            for i in xrange(N):
+                normalization_factor = sum([pi[j]*gauss(mu[j, :], sigma[j], X[i, :]) for j in xrange(K)])
+                phi.append(np.array([pi[k]*gauss(mu[k, :], sigma[k], X[i, :])/normalization_factor for k in xrange(K)]))
