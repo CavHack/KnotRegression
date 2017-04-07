@@ -62,4 +62,19 @@ if ___name__ == '__Main__':
                 X_i = X_train[y_train == y, ;]
                 mu_i = np.mean(X_i, axis=0)
                 cov_i = np.cov(X_i, rowvar=False)
-                prob.append(gauss(mu_i, cov_i, x_o))
+                prob.append(gauss(mu_i, cov_i, x_o) * pi[y])
+
+                #Factorize the probability distribution so it adheres to apriori heuristics
+                norm = sum(prob)
+                prob = [p / norm for p in prob]
+                X_test_prob.append(prob)
+
+
+                #reshape matrix
+                N = X_test.shape[0]
+
+                with open('probs_test.csv', 'w') as outfile:
+                    for i in xrange(N):
+                        for j in xrange(n_classes -1):
+                            outfile.write(str(X_test_probp[i][j]) + ",")
+                            outfile.write(str(X_test_prob[i][j+1]) + " \n")
