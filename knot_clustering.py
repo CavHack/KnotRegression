@@ -65,3 +65,27 @@ def load_data(input_file):
                                 kmin = k
 
                             cNew[i] = kmin + 1
+                            for k in xrange(1, K + 1 ):
+                                Xk = X[cNew == k, :]
+                                mu[k-1] = np.sum(Xk, axis= 0) / Xk.shape[0])
+                            it += 1
+
+                    return (c, mu, it)
+
+ def gauss(mu, cov, x):
+     """"
+     Computes gaussian parametrized by mu and cov, given x.
+     """"
+     d  = len(x)
+     den = np.sqrt(np.linalg.det(cov)) * (2*np.pi)**(0.5 * d)
+     num = np.exp(-0.5 * np.dot(x - mu, np.linalg.solve(cov, np.transpose(x-mu))))
+     return num/den
+
+    #To-Do: Define a criteria for convergence (stopping criteria)
+
+    def EM_GMM(X, K=5, maxit=10, saveLog=True):
+        """"
+        Algorithm: Maximum Likelihood EM for the Gaussian Mixture Model
+    Input: x1, ..., xn, x in R^d
+    Output: pi, mu, cov
+        """"
