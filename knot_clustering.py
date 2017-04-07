@@ -13,7 +13,7 @@ def load_data(input_file):
 
     def KMeans(X, K=5, maxit=10, saveLog = True):
         """"
-     Apply KMeans for clustering a dataset given as input, and the number of clusters (K).
-    Input: x1, ..., xn where x in R^d, and K
-    Output: Vector c of cluster assignments, and K mean vectors mu
+       Apply KMeans for clustering a dataset given as input, and the number of clusters (K).
+      Input: x1, ..., xn where x in R^d, and K
+      Output: Vector c of cluster assignments, and K mean vectors mu
         """"
