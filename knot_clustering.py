@@ -104,3 +104,43 @@ def load_data(input_file):
             for i in xrange(N):
                 normalization_factor = sum([pi[j]*gauss(mu[j, :], sigma[j], X[i, :]) for j in xrange(K)])
                 phi.append(np.array([pi[k]*gauss(mu[k, :], sigma[k], X[i, :])/normalization_factor for k in xrange(K)]))
+
+                phi = np.array(phi)
+
+                n = np.sum(phi, axis=0)
+
+                #M-Step
+                for k in xrange(K):
+                    pi[k] = n[k]/N
+
+                    mu[k] = np.zeros([1, D])
+                    for i in xrange(N):
+                        mu[k] = mu[k] + phi[i, k]*X[i, :]
+                        mu[k] = mu[k]/n[k]
+
+                        prod_sigma = np.zeros([D, D])
+                        for i in xrange(N):
+                            xmu = (X[i, :] - mu[k])[np.newaxis]
+                            prod_sigma = prod_sigma + phi[i,k] * xmu.T.dot(xmu)
+                            sigma[k] = prod_sigma / n[k]
+
+                        sigma = np.array(sigma)
+
+                            if saveLog:
+                                with open('pi-' + str(it+1) + '.csv', 'w') as f:
+                                    for k in xrange(K-1):
+                                        f.write(str(pi[k]) + '\n')
+                                        f.write(str(pi[K-1]))
+
+                            with open('mu-' + str(it+1) + '.csv', 'w') as f:
+                                for m in mu:
+                                    for k in xrange(D-1):
+                                        f.write(str(m[k]) + ',')
+                                    f.write(str(m[D-1]) + '\n')
+
+                                for k in xrange(K):
+                                    cov_k = sigma[k]
+                                    with open ('Sigma-' + str(k+1) + '-' + str(it + 1) + '.csv', 'w') as f:
+                                        for i in xrange(cov_k.shape[0]):
+                                            for j in xrange(cov_k.shape[1]-1):
+                                                f.write(str(cov_k[i,j]) + ',')
