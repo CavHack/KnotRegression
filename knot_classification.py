@@ -54,3 +54,12 @@ if ___name__ == '__Main__':
 
 
         #unoptimal solution.
+        #For this model, you will need to derive the maximum likelihood updates for the class prior probability vector
+
+        for x_o in X_test:
+            prob = []
+            for y in set(y_train):
+                X_i = X_train[y_train == y, ;]
+                mu_i = np.mean(X_i, axis=0)
+                cov_i = np.cov(X_i, rowvar=False)
+                prob.append(gauss(mu_i, cov_i, x_o))
